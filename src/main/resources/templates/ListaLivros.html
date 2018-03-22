@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="LayoutPadrao">
+
+<section layout:fragment="conteudo">
+
+	<div class="panel panel-default" style="margin: 10px">
+		<div class="panel-heading">
+			<h1 class="panel-title">Lista de livros</h1>
+		</div>
+		<div class="panel-body">
+
+			<div layout:include="MensagemGeral"></div>
+
+			<form class="form-inline" method="POST" enctype="multipart/form-data" th:object="${livro}"
+				th:action="@{/livros}" style="margin: 20px 0">
+				<div layout:include="MensagemErro"></div>
+				<div class="form-group">
+
+					<input type="hidden" th:field="*{id}" />
+					<input type="text" class="form-control" placeholder="Título" th:field="*{titulo}" />
+					<input type="text" class="form-control" placeholder="Descrição" th:field="*{descricao}" />
+          <input type="text" class="form-control" placeholder="Genero" th:field="*{genero}" />
+          <select class="form-control" name="editora" th:field="*{editora}">
+            <option th:each="e : ${todasEditoras}" th:value="${e.id}" th:text="${e.nome}">
+            </option>
+          </select>
+          <button type="submit" class="btn btn-primary">Adicionar</button>
+            <input type="file" name="file"/>
+
+				</div>
+			</form>
+
+
+			<table class="table">
+				<thead>
+					<tr>
+            <th>Capa</th>
+						<th>Título</th>
+						<th>Descrição</th>
+            <th>Genero</th>
+						<th>Editora</th>
+						<th colspan="2">Ação</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="l : ${livros}">
+            <td><img th:src="@{/livros/image/}+${l.id}" height="100" width="100" /></td>
+						<td th:text="${l.titulo}"></td>
+						<td th:text="${l.descricao}"></td>
+            <td th:text="${l.genero}"></td>
+						<td th:text="${l.editora.nome}"></td>
+						<td><a th:href="@{/livros/alterar/}+${l.id}" class="glyphicon glyphicon-pencil"></a></td>
+						<td><a th:href="@{/livros/excluir/}+${l.id}" class="glyphicon glyphicon-trash"></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+</section>
+</html>
